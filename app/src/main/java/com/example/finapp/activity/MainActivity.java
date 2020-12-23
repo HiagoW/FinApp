@@ -20,4 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, CadastroActivity.class);
         startActivity(intent);
     }
+
+    public void extrato(View view){
+        Intent intent = new Intent(MainActivity.this, ExtratoActivity.class);
+        startActivity(intent);
+    }
 }

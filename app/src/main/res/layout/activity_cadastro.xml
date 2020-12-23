@@ -45,6 +45,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:text="Categoria:"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,6 +56,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
         android:text="Valor (R$):"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCategorias" />
 
@@ -76,6 +78,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:text="Selecione uma data"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

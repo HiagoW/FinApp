@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static int DB_VERSION = 4;
+    public static int DB_VERSION = 6;
     public static String DB_NAME = "FINAPP.DB";
     public static String TABLE1_NAME = "operacoes";
     public static String TABLE2_NAME = "categorias";
@@ -29,9 +29,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 " categoria integer, " +
                 " foreign key (categoria) references " + TABLE2_NAME + "(id)); ";
         String CREATE_SQL_3 =
-                " INSERT INTO "+TABLE2_NAME+"(descricao,debito) VALUES ('educação',1),"+
-                "('lazer',1),('moradia',1),('saúde',1),('outros',1),('salário',0),"+
-                "('transferências',0);";
+                " INSERT INTO "+TABLE2_NAME+"(descricao,debito) VALUES ('Educação',1),"+
+                "('Lazer',1),('Moradia',1),('Saúde',1),('Outros',1),('Salário',0),"+
+                "('Transferências',0);";
         try{
             sqLiteDatabase.execSQL(CREATE_SQL);
             sqLiteDatabase.execSQL(CREATE_SQL_2);
@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         String sql = "DROP TABLE IF EXISTS " + TABLE1_NAME + " ; ";
-        String sql2 = "DROP TABLE IF EXISTS " + TABLE1_NAME + " ; ";
+        String sql2 = "DROP TABLE IF EXISTS " + TABLE2_NAME + " ; ";
         try{
             sqLiteDatabase.execSQL(sql);
             sqLiteDatabase.execSQL(sql2);

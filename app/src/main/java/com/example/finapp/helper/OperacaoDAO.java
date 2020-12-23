@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.finapp.Utils;
 import com.example.finapp.model.Categoria;
 import com.example.finapp.model.Operacao;
 
@@ -38,11 +39,39 @@ public class OperacaoDAO {
                 Operacao op = new Operacao();
                 Long id = cursor.getLong(0);
                 Double valor = cursor.getDouble(1);
-                long miliseconds = cursor.getLong(2);
-                Date data = new Date(miliseconds);
                 op.setId(id);
                 op.setValor(valor);
-                op.setData(data);
+                op.setData(Utils.miliToDate(cursor.getLong(2)));
+                Categoria categoria = new Categoria();
+                Long idCat = cursor.getLong(4);
+                String descricao = cursor.getString(5);
+                int debito = cursor.getInt(6);
+                op.setCategoria(categoria);
+                categoria.setId(idCat);
+                categoria.setDescricao(descricao);
+                categoria.setDebito(debito);
+                operacaoList.add(op);
+            }
+            return operacaoList;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public List<Operacao> get15Operacoes() {
+        List<Operacao> operacaoList = new ArrayList<>();
+        try{
+            String sql = "SELECT o.id, o.valor, o.data, o.categoria, c.id, c.descricao, c.debito "+
+                    "FROM " + DBHelper.TABLE1_NAME + " o JOIN " + DBHelper.TABLE2_NAME +" c " +
+                    "ON(o.categoria=c.id) ORDER BY o.data DESC LIMIT 15 ";
+            Cursor cursor = read.rawQuery(sql,null);
+            while(cursor.moveToNext()){
+                Operacao op = new Operacao();
+                Long id = cursor.getLong(0);
+                Double valor = cursor.getDouble(1);
+                op.setId(id);
+                op.setValor(valor);
+                op.setData(Utils.miliToDate(cursor.getLong(2)));
                 Categoria categoria = new Categoria();
                 Long idCat = cursor.getLong(4);
                 String descricao = cursor.getString(5);
@@ -61,8 +90,7 @@ public class OperacaoDAO {
 
     public boolean insertOperacao(Operacao operacao){
         ContentValues values = new ContentValues();
-        long miliseconds = operacao.getData().getTime();
-        values.put("data",miliseconds);
+        values.put("data",Utils.dateToMili(operacao.getData()));
         values.put("valor",operacao.getValor());
         values.put("categoria",operacao.getCategoria().getId());
         try{

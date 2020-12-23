@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.finapp.R;
+import com.example.finapp.Utils;
 import com.example.finapp.helper.CategoriaDAO;
 import com.example.finapp.helper.OperacaoDAO;
 import com.example.finapp.model.Categoria;
@@ -78,10 +79,9 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
             Toast.makeText(CadastroActivity.this,"Selecione uma categoria. ",Toast.LENGTH_SHORT).show();
             return ;
         }
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         Date date;
         try{
-            date = format.parse(data);
+            date = Utils.stringToDate(data);
         }catch (Exception e){
             Toast.makeText(CadastroActivity.this,"Selecione uma data válida. ",Toast.LENGTH_SHORT).show();
             return ;
@@ -91,7 +91,7 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         op.setValor(Double.parseDouble(editTextValor.getText().toString()));
         op.setCategoria(categoria);
         operacaoDAO.insertOperacao(op);
-        Toast.makeText(CadastroActivity.this,"Despesa cadastrada. ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(CadastroActivity.this,"Operação cadastrada. ",Toast.LENGTH_SHORT).show();
     }
 
     public void datePicker(View view){
