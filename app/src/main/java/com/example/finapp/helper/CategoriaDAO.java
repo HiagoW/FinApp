@@ -22,7 +22,7 @@ public class CategoriaDAO {
     public List<Categoria> getAllCategorias(){
         List<Categoria> categoriaList = new ArrayList<>();
         Cursor cursor = read.query(DBHelper.TABLE2_NAME, new String[]{"id","descricao","debito"},
-                null,null,null,null,null);
+                null,null,null,null,"debito, descricao");
         while(cursor.moveToNext()){
             Categoria categoria = new Categoria();
             Long id = cursor.getLong(cursor.getColumnIndex("id"));

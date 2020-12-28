@@ -31,6 +31,6 @@ public class Utils {
         NumberFormat nf = NumberFormat.getInstance(new Locale("pt", "BR"));
         nf.setMinimumFractionDigits(2);
         nf  .setMaximumFractionDigits(2);
-        return "R$: " + nf.format(valor);
+        return "R$ " + nf.format(valor);
     }
 }

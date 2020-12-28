@@ -3,6 +3,7 @@ package com.example.finapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +31,7 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
 
     Spinner spinnerCategorias;
     EditText editTextValor;
-    TextView textViewData;
+    TextView textViewData, textViewSpinner;
     Categoria categoria;
     OperacaoDAO operacaoDAO;
     String data;
@@ -56,6 +57,12 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 categoria = (Categoria) adapterView.getSelectedItem();
+                textViewSpinner = findViewById(R.id.textViewSpinner);
+                if(categoria.isDebito()==1){
+                    textViewSpinner.setTextColor(Color.parseColor("#ff0000"));
+                }else{
+                    textViewSpinner.setTextColor(Color.parseColor("#00ff00"));
+                }
                 Toast.makeText(CadastroActivity.this,"Selecionado: "+categoria,Toast.LENGTH_SHORT).show();
             }
 

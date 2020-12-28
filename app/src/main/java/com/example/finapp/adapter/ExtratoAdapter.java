@@ -1,5 +1,6 @@
 package com.example.finapp.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,13 @@ public class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.MyViewHo
         Operacao operacao = list.get(position);
         holder.categoria.setText(operacao.getCategoria().getDescricao());
         holder.data.setText(Utils.dateToString(operacao.getData()));
-        holder.valor.setText(Utils.formatValor(operacao.getValor()));
+        if(operacao.getCategoria().isDebito()==1){
+            holder.valor.setText("- " + Utils.formatValor(operacao.getValor()));
+            holder.valor.setTextColor(Color.parseColor("#ff0000"));
+        }else{
+            holder.valor.setText("+ " + Utils.formatValor(operacao.getValor()));
+            holder.valor.setTextColor(Color.parseColor("#00ff00"));
+        }
     }
 
     @Override
