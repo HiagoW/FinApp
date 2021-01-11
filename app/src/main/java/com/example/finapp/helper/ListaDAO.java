@@ -61,11 +61,11 @@ public class ListaDAO {
     public List<ItemLista> get15Itens() {
         List<ItemLista> itemList = new ArrayList<>();
         try {
-            String sql = "SELECT o.id, SUM(o.valor), o.data, o.categoria, c.id, c.descricao, c.debito " +
+            String sql = "SELECT o.id, SUM(o.valor) as valor, o.data, o.categoria, c.id, c.descricao, c.debito " +
                     "FROM " + DBHelper.TABLE1_NAME + " o JOIN " + DBHelper.TABLE2_NAME + " c " +
                     "ON(o.categoria=c.id) " +
                     "GROUP BY(o.categoria)" +
-                    "ORDER BY o.valor DESC LIMIT 15 ";
+                    "ORDER BY valor DESC LIMIT 15 ";
             Cursor cursor = read.rawQuery(sql, null);
             while (cursor.moveToNext()) {
                 System.out.println("1");
