@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         imgCategoria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                lista(view);
             }
         });
 
@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void extrato(View view){
         Intent intent = new Intent(MainActivity.this, ExtratoActivity.class);
+        startActivity(intent);
+    }
+
+    public void lista(View view){
+        Intent intent = new Intent(MainActivity.this, ListaClassificadaActivity.class);
         startActivity(intent);
     }
 }
