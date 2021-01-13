@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         imgPesquisar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                pesquisar(view);
             }
         });
 
@@ -61,4 +61,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, ExtratoActivity.class);
         startActivity(intent);
     }
+
+    public void pesquisar(View view){
+        Intent intent = new Intent(MainActivity.this, PesquisarActivity.class);
+        startActivity(intent);
+    }
+
 }
