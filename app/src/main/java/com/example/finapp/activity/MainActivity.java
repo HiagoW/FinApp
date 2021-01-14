@@ -62,16 +62,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-<<<<<<< HEAD
     public void pesquisar(View view){
         Intent intent = new Intent(MainActivity.this, PesquisarActivity.class);
         startActivity(intent);
     }
 
-=======
     public void lista(View view){
         Intent intent = new Intent(MainActivity.this, ListaClassificadaActivity.class);
         startActivity(intent);
     }
->>>>>>> 190544236990f686ae4eab213d37f8c43ca00f4a
 }

@@ -88,6 +88,38 @@ public class OperacaoDAO {
         }
     }
 
+    public List<Operacao> pesquisar(Date d1, Date d2, Categoria cat) {
+        List<Operacao> operacaoList = new ArrayList<>();
+        try{
+            String sql = "SELECT o.id, o.valor, o.data, o.categoria, c.id, c.descricao, c.debito "+
+                    "FROM " + DBHelper.TABLE1_NAME + " o JOIN " + DBHelper.TABLE2_NAME +" c " +
+                    "ON(o.categoria=c.id) WHERE o.data >= ? AND o.data <= ? AND c.id = ? ORDER BY o.data DESC ";
+            long md1 = Utils.dateToMili(d1);
+            long md2 = Utils.dateToMili(d2);
+            Cursor cursor = read.rawQuery(sql,new String[]{String.valueOf(md1),String.valueOf(md2),String.valueOf(cat.getId())});
+            while(cursor.moveToNext()){
+                Operacao op = new Operacao();
+                Long id = cursor.getLong(0);
+                Double valor = cursor.getDouble(1);
+                op.setId(id);
+                op.setValor(valor);
+                op.setData(Utils.miliToDate(cursor.getLong(2)));
+                Categoria categoria = new Categoria();
+                Long idCat = cursor.getLong(4);
+                String descricao = cursor.getString(5);
+                int debito = cursor.getInt(6);
+                op.setCategoria(categoria);
+                categoria.setId(idCat);
+                categoria.setDescricao(descricao);
+                categoria.setDebito(debito);
+                operacaoList.add(op);
+            }
+            return operacaoList;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     public boolean insertOperacao(Operacao operacao){
         ContentValues values = new ContentValues();
         values.put("data",Utils.dateToMili(operacao.getData()));

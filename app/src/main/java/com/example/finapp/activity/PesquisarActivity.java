@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,10 +26,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PesquisarActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class PesquisarActivity extends AppCompatActivity {
 
     Spinner spinner;
     TextView textViewData1, textViewData2, textViewSpinner;
+    Button botao1, botao2;
     Categoria categoria;
     OperacaoDAO operacaoDAO;
     String data1, data2;
@@ -40,8 +42,10 @@ public class PesquisarActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesquisar);
         spinner = findViewById(R.id.spinner);
-        textViewData1 = findViewById(R.id.textView9);
-        textViewData2 = findViewById(R.id.textView10);
+        textViewData1 = findViewById(R.id.textView10);
+        textViewData2 = findViewById(R.id.textView9);
+        botao1 = findViewById(R.id.button2);
+        botao2 = findViewById(R.id.button4);
 
         CategoriaDAO categoriaDAO = new CategoriaDAO(getApplicationContext());
         operacaoDAO = new OperacaoDAO(getApplicationContext());
@@ -70,40 +74,56 @@ public class PesquisarActivity extends AppCompatActivity implements DatePickerDi
 
             }
         });
+
+        View.OnClickListener showDatePicker = new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                final View vv = view;
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PesquisarActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        if(vv.getId() == R.id.button2){
+                            data1 = day+"/"+(month+1)+"/"+year;
+                            textViewData1.setText(data1);
+                        }else{
+                            data2 = day+"/"+(month+1)+"/"+year;
+                            textViewData2.setText(data2);
+                        }
+                    }
+                },Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.show();
+            }
+        };
+        botao1.setOnClickListener(showDatePicker);
+        botao2.setOnClickListener(showDatePicker);
     }
     public void pesquisar(View view) throws ParseException {
         if(data1==null){
-            Toast.makeText(PesquisarActivity.this,"Selecione uma data. ",Toast.LENGTH_SHORT).show();
+            Toast.makeText(PesquisarActivity.this,"Selecione a data de início. ",Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        if(data2==null){
+            Toast.makeText(PesquisarActivity.this,"Selecione a data de fim. ",Toast.LENGTH_SHORT).show();
             return ;
         }
         if(categoria==null){
             Toast.makeText(PesquisarActivity.this,"Selecione uma categoria. ",Toast.LENGTH_SHORT).show();
             return ;
         }
-        Date date;
+        Date date1, date2;
         try{
-            date = Utils.stringToDate(data1);
+            date1 = Utils.stringToDate(data1);
+            date2 = Utils.stringToDate(data2);
+            List<Operacao> operacoes = operacaoDAO.pesquisar(date1, date2, categoria);
+            System.out.println("a");
         }catch (Exception e){
             Toast.makeText(PesquisarActivity.this,"Selecione uma data válida. ",Toast.LENGTH_SHORT).show();
             return ;
         }
 
-    }
-    public void datePicker(View view){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        );
-        datePickerDialog.show();
-    }
-
-
-    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        data1 = day+"/"+(month+1)+"/"+year;
-        textViewData1.setText(data1);
     }
 
 
