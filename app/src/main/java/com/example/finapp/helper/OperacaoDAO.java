@@ -46,10 +46,10 @@ public class OperacaoDAO {
                 Long idCat = cursor.getLong(4);
                 String descricao = cursor.getString(5);
                 int debito = cursor.getInt(6);
-                op.setCategoria(categoria);
                 categoria.setId(idCat);
                 categoria.setDescricao(descricao);
                 categoria.setDebito(debito);
+                op.setCategoria(categoria);
                 operacaoList.add(op);
             }
             return operacaoList;
@@ -76,10 +76,10 @@ public class OperacaoDAO {
                 Long idCat = cursor.getLong(4);
                 String descricao = cursor.getString(5);
                 int debito = cursor.getInt(6);
-                op.setCategoria(categoria);
                 categoria.setId(idCat);
                 categoria.setDescricao(descricao);
                 categoria.setDebito(debito);
+                op.setCategoria(categoria);
                 operacaoList.add(op);
             }
             return operacaoList;
@@ -88,15 +88,21 @@ public class OperacaoDAO {
         }
     }
 
-    public List<Operacao> pesquisar(Date d1, Date d2, Categoria cat) {
+    public List<Operacao> pesquisar(Date d1, Date d2, String categoria) {
         List<Operacao> operacaoList = new ArrayList<>();
         try{
             String sql = "SELECT o.id, o.valor, o.data, o.categoria, c.id, c.descricao, c.debito "+
                     "FROM " + DBHelper.TABLE1_NAME + " o JOIN " + DBHelper.TABLE2_NAME +" c " +
-                    "ON(o.categoria=c.id) WHERE o.data >= ? AND o.data <= ? AND c.id = ? ORDER BY o.data DESC ";
+                    "ON(o.categoria=c.id) WHERE o.data >= ? AND o.data <= ? ";
+            if(categoria.equals("Débito")){
+                 sql += "AND c.debito = 1 ";
+            }else if(categoria.equals("Crédito")){
+                sql += " AND c.debito = 0 ";
+            }
+            sql += " ORDER BY o.data DESC ";
             long md1 = Utils.dateToMili(d1);
             long md2 = Utils.dateToMili(d2);
-            Cursor cursor = read.rawQuery(sql,new String[]{String.valueOf(md1),String.valueOf(md2),String.valueOf(cat.getId())});
+            Cursor cursor = read.rawQuery(sql,new String[]{String.valueOf(md1),String.valueOf(md2)});
             while(cursor.moveToNext()){
                 Operacao op = new Operacao();
                 Long id = cursor.getLong(0);
@@ -104,14 +110,14 @@ public class OperacaoDAO {
                 op.setId(id);
                 op.setValor(valor);
                 op.setData(Utils.miliToDate(cursor.getLong(2)));
-                Categoria categoria = new Categoria();
+                Categoria cat = new Categoria();
                 Long idCat = cursor.getLong(4);
                 String descricao = cursor.getString(5);
                 int debito = cursor.getInt(6);
-                op.setCategoria(categoria);
-                categoria.setId(idCat);
-                categoria.setDescricao(descricao);
-                categoria.setDebito(debito);
+                cat.setId(idCat);
+                cat.setDescricao(descricao);
+                cat.setDebito(debito);
+                op.setCategoria(cat);
                 operacaoList.add(op);
             }
             return operacaoList;

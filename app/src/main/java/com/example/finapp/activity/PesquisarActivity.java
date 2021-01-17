@@ -23,6 +23,7 @@ import com.example.finapp.model.Categoria;
 import com.example.finapp.model.Operacao;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +33,9 @@ public class PesquisarActivity extends AppCompatActivity {
     Spinner spinner;
     TextView textViewData1, textViewData2, textViewSpinner;
     Button botao1, botao2;
-    Categoria categoria;
     OperacaoDAO operacaoDAO;
-    String data1, data2;
-
+    String data1, data2, categoria;
+    public static List<Operacao> operacoes;
 
 
     @Override
@@ -51,7 +51,11 @@ public class PesquisarActivity extends AppCompatActivity {
         CategoriaDAO categoriaDAO = new CategoriaDAO(getApplicationContext());
         operacaoDAO = new OperacaoDAO(getApplicationContext());
 
-        List<Categoria> categorias = categoriaDAO.getAllCategorias();
+        List<String> categorias = new ArrayList<>();
+        categorias.add("Todos");
+        categorias.add("Débito");
+        categorias.add("Crédito");
+
         List<Operacao> operacoes = operacaoDAO.getAllOperacoes();
 
         ArrayAdapter categoriaAdapter = new ArrayAdapter(this,R.layout.spinner,categorias);
@@ -60,11 +64,11 @@ public class PesquisarActivity extends AppCompatActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                categoria = (Categoria) adapterView.getSelectedItem();
+                categoria = (String) adapterView.getSelectedItem();
                 textViewSpinner = findViewById(R.id.textViewSpinner);
-                if (categoria.isDebito() == 1) {
+                if (categoria.equals("Débito")) {
                     textViewSpinner.setTextColor(Color.parseColor("#ff0000"));
-                } else {
+                } else if (categoria.equals("Crédito")) {
                     textViewSpinner.setTextColor(Color.parseColor("#00ff00"));
                 }
                 Toast.makeText(PesquisarActivity.this, "Selecionado: " + categoria, Toast.LENGTH_SHORT).show();
@@ -118,10 +122,8 @@ public class PesquisarActivity extends AppCompatActivity {
         try{
             date1 = Utils.stringToDate(data1);
             date2 = Utils.stringToDate(data2);
-            List<Operacao> operacoes = operacaoDAO.pesquisar(date1, date2, categoria);
-            System.out.println("a");
+            operacoes = operacaoDAO.pesquisar(date1, date2, categoria);
             Intent i = new Intent(this, DadosPesquisaActivity.class);
-            DadosPesquisaActivity.dados = operacoes;
             startActivity(i);
 
         }catch (Exception e){
