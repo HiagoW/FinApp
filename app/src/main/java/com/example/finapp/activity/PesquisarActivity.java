@@ -3,6 +3,7 @@ package com.example.finapp.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -119,6 +120,10 @@ public class PesquisarActivity extends AppCompatActivity {
             date2 = Utils.stringToDate(data2);
             List<Operacao> operacoes = operacaoDAO.pesquisar(date1, date2, categoria);
             System.out.println("a");
+            Intent i = new Intent(this, DadosPesquisaActivity.class);
+            DadosPesquisaActivity.dados = operacoes;
+            startActivity(i);
+
         }catch (Exception e){
             Toast.makeText(PesquisarActivity.this,"Selecione uma data válida. ",Toast.LENGTH_SHORT).show();
             return ;

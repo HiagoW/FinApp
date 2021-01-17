@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinApp">
-
-        <activity android:name=".activity.PesquisarActivity"></activity>
-        <activity android:name=".activity.ListaClassificadaActivity"></activity>
+        <activity android:name=".activity.DadosPesquisaActivity"></activity>
+        <activity android:name=".activity.PesquisarActivity" />
+        <activity android:name=".activity.ListaClassificadaActivity" />
         <activity android:name=".activity.ExtratoActivity" />
         <activity android:name=".activity.CadastroActivity" />
         <activity android:name=".activity.MainActivity">
