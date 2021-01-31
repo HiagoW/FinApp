@@ -71,4 +71,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, ListaClassificadaActivity.class);
         startActivity(intent);
     }
+
+    public void close(View view){
+        this.finishAffinity();
+    }
 }
